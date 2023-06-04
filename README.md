@@ -21,5 +21,5 @@ git clone https://github.com/crischutu07/OmletArcadeStreamTest
 ```
 We'll make both file executable by using:
 ```sh
-chmod +x {camau,vov}.sh
+chmod +x vov.sh
 ```
