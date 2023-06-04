@@ -23,3 +23,7 @@ We'll make both file executable by using:
 ```sh
 chmod +x vov.sh
 ```
+Finally run it:
+```sh
+bash vov.sh
+```
