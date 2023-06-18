@@ -17,13 +17,13 @@ sudo pacman -S git ffmpeg
 ## Final installation
 Clone this repository:
 ```sh
-git clone https://github.com/crischutu07/OmletArcadeStreamTest
+git clone https://github.com/crischutu07/RTMPStream
 ```
 We'll make both file executable by using:
 ```sh
-chmod +x vov.sh
+chmod +x defaultinput.sh
 ```
 Finally run it:
 ```sh
-bash vov.sh
+bash defaultinput.sh
 ```
