@@ -1,7 +1,7 @@
-# Omlet Arcade Stream Test (or RTMP Stream Test with `ffmpeg`)
-A stream Test that exampling rtmp stream using [Omlet Arcade](https://omlet.gg)
+# RTMP Streaming using `ffmpeg`
+A stream Test that streams using `ffmpeg` software
 # How to use
-Clone this github repos and. Install `ffmpeg` on your favorite Operating System. Here we'll use Debian (Ubuntu) to install.
+Clone this github repository and. Install `ffmpeg` on your favorite Operating System. Here we'll use Debian (Ubuntu) to install.
 ## Installation
 To install `ffmpeg`, make sure `git`was installed on your machine, also we will install `ffmpeg`:
 
