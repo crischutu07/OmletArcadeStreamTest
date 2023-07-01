@@ -2,35 +2,54 @@
 # This file using server source as a video
 # > CAUTION: You'll get black screen if the server
 # > Only uses audio input
-SOURCE='YOUR_INPUT_SERVER_HERE' # can be an video file
-RTMP='YOUR_SERVER_STREAMING_HERE'
-KEY='YOUR_KEY_HERE'
-default_config='config.json' # must be json
+default_config='config.yml' # must be yaml
+# https://stackoverflow.com/questions/5014632
+function yaml {
+   local prefix=$2
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\):|\1|" \
+        -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+      }
+   }'
+}
+
+if [[ "$(find $default_config &> /dev/null; echo "$?")" != "0" ]]; then
+	setup
+fi
+
 function setup (){
-	if [[ "$(find $default_config)" != "$default_config" ]];
-		echo "prepare setup"
-	else
-		exit 0;
-	fi
+echo '''
+file_path='/path/to/file.mp4' // can be a link source
+rtmp_source='rtmp://example.com/stream'
+rtmp_key='rtmp_key'
+''' > $default_config
+echo "setup is done, please now run ./defaultinput.sh"
 }
 function help (){
-	echo '''List of arguments:
+	echo """List of arguments:
 -f Default file source (required)
 -s Streaming sources (required)
--k Streaming key (optional)'''
+-k Streaming key (optional)"""
 }
-while getopts 'f:s:k:h' option; do
-	case $option in 
-		f) SOURCE=$OPTARG;;
-		s) RTMP=$OPTARG;;
-		k) KEY=$OPTARG;;
-		h) help;;
-		\?) echo "invaild"; exit 1;;
-
-	esac
-done
+#while getopts 'f:s:k:h' option; do
+#	case $option in 
+#		f) SOURCE=$OPTARG;;
+#		s) RTMP=$OPTARG;;
+#		k) KEY=$OPTARG;;
+#		h) help;;
+#		\?) echo "invaild"; exit 1;;
+#	esac
+#done
 function main (){
-if [[ $@ == "" ]]; then
+if [[ "$*" == "" ]]; then
 	help; exit 1
 fi
 echo "SOURCE: $SOURCE"
@@ -48,4 +67,5 @@ ffmpeg \
 	-c copy \
 	-f flv $RTMP/$KEY
 }
+cat $default_config | yaml rtmp_key
 main "$@"
